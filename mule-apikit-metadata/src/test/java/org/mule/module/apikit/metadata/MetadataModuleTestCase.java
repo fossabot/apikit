@@ -8,9 +8,12 @@ package org.mule.module.apikit.metadata;
 
 import org.junit.Test;
 import org.mule.metadata.api.model.FunctionType;
-import org.mule.module.apikit.metadata.interfaces.Notifier;
-import org.mule.module.apikit.metadata.interfaces.ResourceLoader;
+import org.mule.module.apikit.metadata.api.Metadata;
+import org.mule.module.apikit.metadata.api.Notifier;
+import org.mule.module.apikit.metadata.api.ResourceLoader;
 import org.mule.module.apikit.metadata.utils.MockedApplicationModel;
+import org.mule.module.apikit.metadata.utils.TestNotifier;
+import org.mule.module.apikit.metadata.utils.TestResourceLoader;
 import org.mule.runtime.config.internal.model.ApplicationModel;
 
 import java.util.Optional;
@@ -18,12 +21,12 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.mule.module.apikit.metadata.TestNotifier.ERROR;
-import static org.mule.module.apikit.metadata.TestNotifier.DEBUG;
-import static org.mule.module.apikit.metadata.TestNotifier.INFO;
-import static org.mule.module.apikit.metadata.TestNotifier.WARN;
+import static org.mule.module.apikit.metadata.utils.TestNotifier.ERROR;
+import static org.mule.module.apikit.metadata.utils.TestNotifier.DEBUG;
+import static org.mule.module.apikit.metadata.utils.TestNotifier.INFO;
+import static org.mule.module.apikit.metadata.utils.TestNotifier.WARN;
 
-public class MetadataModuleTestCase {
+public class MetadataModuleTestCase extends AbstractMultiParserTestCase {
 
   @Test
   public void testBasicMetadataModule() throws Exception {
@@ -52,7 +55,6 @@ public class MetadataModuleTestCase {
     assertThat(petShopApiCreateCustomer.isPresent(), is(true));
     assertThat(petshopApiGetCustomers.isPresent(), is(true));
   }
-
 
   @Test
   public void singleApiWithFlowsWithoutConfigRef() throws Exception {

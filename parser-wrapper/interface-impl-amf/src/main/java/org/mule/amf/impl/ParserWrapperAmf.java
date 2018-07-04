@@ -6,7 +6,6 @@
  */
 package org.mule.amf.impl;
 
-import amf.ProfileNames;
 import amf.client.AMF;
 import amf.client.environment.DefaultEnvironment;
 import amf.client.environment.Environment;
@@ -21,7 +20,9 @@ import amf.client.render.Renderer;
 import amf.client.validate.ValidationReport;
 import amf.client.validate.ValidationResult;
 import amf.core.remote.Vendor;
-import java.util.List;
+import java.io.File;
+import java.net.URI;
+import java.util.concurrent.ExecutionException;
 import org.mule.amf.impl.loader.ExchangeDependencyResourceLoader;
 import org.mule.amf.impl.model.AmfImpl;
 import org.mule.raml.interfaces.ParserWrapper;
@@ -31,10 +32,6 @@ import org.mule.raml.interfaces.model.IRaml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Option;
-
-import java.io.File;
-import java.net.URI;
-import java.util.concurrent.ExecutionException;
 
 import static amf.ProfileNames.AMF;
 import static java.util.stream.Collectors.joining;

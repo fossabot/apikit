@@ -11,12 +11,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mule.metadata.api.model.FunctionType;
 import org.mule.metadata.internal.utils.MetadataTypeWriter;
-import org.mule.module.apikit.metadata.interfaces.Notifier;
-import org.mule.module.apikit.metadata.interfaces.ResourceLoader;
-import org.mule.module.apikit.metadata.model.Flow;
-import org.mule.module.apikit.metadata.raml.RamlHandler;
+import org.mule.module.apikit.metadata.api.Metadata;
+import org.mule.module.apikit.metadata.api.ResourceLoader;
+import org.mule.module.apikit.metadata.internal.javaparser.ApplicationModelWrapper;
+import org.mule.module.apikit.metadata.internal.javaparser.raml.RamlHandler;
+import org.mule.module.apikit.metadata.internal.model.Flow;
 import org.mule.module.apikit.metadata.utils.MockedApplicationModel;
 import org.mule.module.apikit.metadata.utils.TestDataProvider;
+import org.mule.module.apikit.metadata.utils.TestNotifier;
+import org.mule.module.apikit.metadata.utils.TestResourceLoader;
 import org.mule.runtime.config.internal.model.ApplicationModel;
 
 import java.io.File;
@@ -27,7 +30,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import static java.lang.String.format;

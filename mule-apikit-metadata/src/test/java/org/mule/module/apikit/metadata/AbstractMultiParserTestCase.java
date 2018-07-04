@@ -4,16 +4,15 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.module.apikit;
+package org.mule.module.apikit.metadata;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static java.util.Arrays.asList;
-import static org.mule.module.apikit.api.RamlHandler.MULE_APIKIT_PARSER_AMF;
+import static org.mule.module.apikit.metadata.api.Metadata.MULE_APIKIT_PARSER_AMF;
 
 /**
  * Use this class when Test are not FunctionTests
@@ -27,11 +26,11 @@ public abstract class AbstractMultiParserTestCase {
   private static final String AMF_PARSER = "AmfParser";
   private static final String JAVA_PARSER = "JavaParser";
 
-  @Parameterized.Parameters(name = "{0}")
+    @Parameterized.Parameters(name = "{0}")
   public static Iterable<Object[]> data() {
     return asList(new Object[][] {
-        {JAVA_PARSER},
-        {AMF_PARSER}
+            {JAVA_PARSER},
+            {AMF_PARSER}
     });
   }
 

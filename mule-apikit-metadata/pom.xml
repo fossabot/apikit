@@ -41,6 +41,13 @@
             <version>${mule.version}</version>
         </dependency>
 
+        <!-- AMF -->
+        <dependency>
+            <groupId>org.mule.amf</groupId>
+            <artifactId>amf-client_2.12</artifactId>
+            <version>${amfVersion}</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.mule.raml</groupId>
             <artifactId>raml-parser-interface-impl-v1</artifactId>
@@ -49,6 +56,11 @@
         <dependency>
             <groupId>org.mule.raml</groupId>
             <artifactId>raml-parser-interface-impl-v2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.raml</groupId>
+            <artifactId>raml-parser-interface-impl-amf</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
