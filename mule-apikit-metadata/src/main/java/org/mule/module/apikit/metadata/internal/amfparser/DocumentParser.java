@@ -1,10 +1,10 @@
 /*
- * (c) 2003-2017 MuleSoft, Inc. This software is protected under international copyright
- * law. All use of this software is subject to MuleSoft's Master Subscription Agreement
- * (or other master license agreement) separately entered into in writing between you and
- * MuleSoft. If such an agreement is not in place, you may not use the software.
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
  */
-package org.mule.module.apikit.metadata.internal.amfparser.amf;
+package org.mule.module.apikit.metadata.internal.amfparser;
 
 import amf.ProfileName;
 import amf.ProfileNames;
@@ -25,12 +25,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import org.mule.module.apikit.metadata.internal.amfparser.exceptions.ParserException;
 
 import static com.sun.jmx.mbeanserver.Util.cast;
 import static org.apache.commons.io.FilenameUtils.getExtension;
 
-public class DocumentParser {
+class DocumentParser {
 
   private DocumentParser() {}
 

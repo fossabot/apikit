@@ -1,30 +1,32 @@
 /*
- * (c) 2003-2017 MuleSoft, Inc. This software is protected under international copyright
- * law. All use of this software is subject to MuleSoft's Master Subscription Agreement
- * (or other master license agreement) separately entered into in writing between you and
- * MuleSoft. If such an agreement is not in place, you may not use the software.
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
  */
 package org.mule.module.apikit.metadata.api;
 
 import java.util.Optional;
 import org.mule.metadata.api.model.FunctionType;
+import org.mule.module.apikit.metadata.internal.amfparser.AmfMetadata;
+import org.mule.module.apikit.metadata.internal.javaparser.RamlMetadata;
 import org.mule.runtime.config.internal.model.ApplicationModel;
 
 public interface Metadata {
 
   String MULE_APIKIT_PARSER_AMF = "mule.apikit.parser.amf";
 
-    /**
-   * Gets the metadata for a Flow
-   * @param flowName Name of the flow
-   * @return The Metadata
-   */
+  /**
+  * Gets the metadata for a Flow
+  * @param flowName Name of the flow
+  * @return The Metadata
+  */
   public Optional<FunctionType> getMetadataForFlow(final String flowName);
-  
+
   /**
    * Builder for Metadata module
    */
-  public static class Builder {
+  class Builder {
 
     private ResourceLoader resourceLoader;
     private ApplicationModel applicationModel;
@@ -50,10 +52,9 @@ public interface Metadata {
     }
 
     public Metadata build() {
-        boolean isAmfEnabled = Boolean.getBoolean(MULE_APIKIT_PARSER_AMF);
-        return isAmfEnabled ?
-            new org.mule.module.apikit.metadata.internal.amfparser.Metadata(applicationModel, resourceLoader, notifier) :
-            new org.mule.module.apikit.metadata.internal.javaparser.Metadata(applicationModel, resourceLoader, notifier);
+      boolean isAmfEnabled = Boolean.getBoolean(MULE_APIKIT_PARSER_AMF);
+      return isAmfEnabled ? new AmfMetadata(applicationModel, resourceLoader, notifier)
+          : new RamlMetadata(applicationModel, resourceLoader, notifier);
     }
   }
 }

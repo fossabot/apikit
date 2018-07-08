@@ -13,8 +13,7 @@ import org.mule.metadata.api.model.FunctionType;
 import org.mule.metadata.internal.utils.MetadataTypeWriter;
 import org.mule.module.apikit.metadata.api.Metadata;
 import org.mule.module.apikit.metadata.api.ResourceLoader;
-import org.mule.module.apikit.metadata.internal.javaparser.ApplicationModelWrapper;
-import org.mule.module.apikit.metadata.internal.javaparser.raml.RamlHandler;
+import org.mule.module.apikit.metadata.internal.model.ApplicationModelWrapper;
 import org.mule.module.apikit.metadata.internal.model.Flow;
 import org.mule.module.apikit.metadata.utils.MockedApplicationModel;
 import org.mule.module.apikit.metadata.utils.TestDataProvider;
@@ -59,12 +58,9 @@ public class MetadataTestCase extends TestDataProvider {
   public void runTest() throws Exception {
     final ResourceLoader resourceLoader = new TestResourceLoader();
     final TestNotifier notifier = new TestNotifier();
-    final RamlHandler ramlHandler = new RamlHandler(resourceLoader, notifier);
 
     final ApplicationModel applicationModel = createApplicationModel(input);
     assertThat(applicationModel, notNullValue());
-
-    final ApplicationModelWrapper wrapper = new ApplicationModelWrapper(applicationModel, ramlHandler, notifier);
 
     final Metadata metadata = new Metadata.Builder()
         .withApplicationModel(applicationModel)
@@ -72,7 +68,7 @@ public class MetadataTestCase extends TestDataProvider {
         .withNotifier(notifier).build();
 
     // Search metadata for each flow
-    final List<FlowFunctionType> types = wrapper.findFlows().stream()
+    final List<FlowFunctionType> types = ApplicationModelWrapper.findFlows(applicationModel).stream()
         .map(flow -> getMetadata(metadata, flow))
         .filter(Optional::isPresent).map(Optional::get)
         .collect(toList());

@@ -1,8 +1,8 @@
 /*
- * (c) 2003-2017 MuleSoft, Inc. This software is protected under international copyright
- * law. All use of this software is subject to MuleSoft's Master Subscription Agreement
- * (or other master license agreement) separately entered into in writing between you and
- * MuleSoft. If such an agreement is not in place, you may not use the software.
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
  */
 package org.mule.module.apikit.metadata.internal.model;
 
@@ -23,7 +23,7 @@ public class ApiCoordinateFactory {
 
   public Optional<ApiCoordinate> fromFlowName(final String flowName) {
 
-      final String[] parts = org.mule.apikit.common.FlowName.decode(flowName).split(FLOW_NAME_SEPARATOR);
+    final String[] parts = org.mule.apikit.common.FlowName.decode(flowName).split(FLOW_NAME_SEPARATOR);
 
     if (parts.length < 2 || parts.length > 4)
       return empty();
@@ -36,16 +36,16 @@ public class ApiCoordinateFactory {
 
   public ApiCoordinate createFromFlowMapping(final FlowMapping mapping) {
 
-        final String flowName = mapping.getFlowRef();
-        final String configName = mapping.getConfigName();
-        final String action = mapping.getAction();
-        final String resource = mapping.getResource();
-        final String contentType = mapping.getContentType();
-        return new ApiCoordinate(flowName, action, resource, contentType, configName);
-    }
+    final String flowName = mapping.getFlowRef();
+    final String configName = mapping.getConfigName();
+    final String action = mapping.getAction();
+    final String resource = mapping.getResource();
+    final String contentType = mapping.getContentType();
+    return new ApiCoordinate(flowName, action, resource, contentType, configName);
+  }
 
-   private static class ApiCoordinateBuilder {
- 
+  private static class ApiCoordinateBuilder {
+
     final private String flowName;
     final private String methodName;
     final private String resourceName;
@@ -63,19 +63,19 @@ public class ApiCoordinateFactory {
 
       final ApiCoordinateBuilder builder = new ApiCoordinateBuilder(flowName, parts[0], parts[1]);
 
-        if (parts.length == 3) {
-            if (configNames.contains(parts[2])) {
-                builder.withConfigName(parts[2]);
-            } else {
-                builder.withMediaType(parts[2]);
-            }
-        } else if (parts.length == 4) {
-            builder.withMediaType(parts[2]).withConfigName(parts[3]);
+      if (parts.length == 3) {
+        if (configNames.contains(parts[2])) {
+          builder.withConfigName(parts[2]);
+        } else {
+          builder.withMediaType(parts[2]);
         }
-        
-        builder.withConfigNames(configNames);
+      } else if (parts.length == 4) {
+        builder.withMediaType(parts[2]).withConfigName(parts[3]);
+      }
 
-        return builder;
+      builder.withConfigNames(configNames);
+
+      return builder;
     }
 
     ApiCoordinateBuilder withMediaType(final String value) {
@@ -89,17 +89,18 @@ public class ApiCoordinateFactory {
     }
 
     ApiCoordinateBuilder withConfigNames(final Set<String> configNames) {
-          this.configNames = configNames;
-          return this;
+      this.configNames = configNames;
+      return this;
     }
 
     private Optional<ApiCoordinate> build() {
-        final ApiCoordinate coord =  new ApiCoordinate(flowName, methodName, resourceName, mediaType, configName);
+      final ApiCoordinate coord = new ApiCoordinate(flowName, methodName, resourceName, mediaType, configName);
 
-          if ((coord.getConfigName() != null && !configNames.contains(coord.getConfigName())) || (configNames.size() > 1 && coord.getConfigName() == null)) {
-              return empty();
-          }
-          return Optional.of(coord);
+      if ((coord.getConfigName() != null && !configNames.contains(coord.getConfigName()))
+          || (configNames.size() > 1 && coord.getConfigName() == null)) {
+        return empty();
+      }
+      return Optional.of(coord);
     }
   }
 }

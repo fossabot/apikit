@@ -20,5 +20,5 @@ public interface ResourceLoader {
    * @param relativePath Location of the root RAML file relative to the /mule/resources/api folder
    * @return The File containing the RAML and all its includes
    */
-   File getResource(String relativePath);
+  File getResource(String relativePath);
 }

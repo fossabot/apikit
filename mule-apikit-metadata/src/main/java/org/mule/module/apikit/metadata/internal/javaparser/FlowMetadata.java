@@ -19,7 +19,6 @@ import org.mule.metadata.message.api.MuleEventMetadataType;
 import org.mule.metadata.message.api.MuleEventMetadataTypeBuilder;
 import org.mule.module.apikit.metadata.api.MetadataSource;
 import org.mule.module.apikit.metadata.api.Notifier;
-import org.mule.module.apikit.metadata.internal.javaparser.raml.RamlApiWrapper;
 import org.mule.module.apikit.metadata.internal.model.ApiCoordinate;
 import org.mule.module.apikit.metadata.internal.model.CertificateFields;
 import org.mule.module.apikit.metadata.internal.model.HttpRequestAttributesFields;
@@ -254,7 +253,7 @@ public class FlowMetadata implements MetadataSource {
   private MetadataType loadIOPayloadMetadata(IMimeType mimeType, ApiCoordinate coordinate, RamlApiWrapper api,
                                              String payloadDescription) {
     try {
-      return Payload.metadata(api, mimeType);
+      return MetadataFactory.payloadMetadata(api, mimeType);
     } catch (Exception e) {
       notifier.warn(format("Error while trying to resolve %s payload metadata for flow '%s'.\nDetails: %s", payloadDescription,
                            coordinate.getFlowName(), e.getMessage()));

@@ -4,7 +4,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.module.apikit.metadata.internal.javaparser.raml;
+package org.mule.module.apikit.metadata.internal.javaparser;
 
 import org.mule.module.apikit.metadata.api.MetadataSource;
 import org.mule.module.apikit.metadata.internal.javaparser.FlowMetadata;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
-public class RamlApiWrapper implements MetadataResolver {
+class RamlApiWrapper implements MetadataResolver {
 
   private final Map<String, IResource> ramlResources = new HashMap<>();
   private final Map<String, IParameter> baseUriParameters;
@@ -43,10 +43,11 @@ public class RamlApiWrapper implements MetadataResolver {
   }
 
   public Optional<MetadataSource> getMetadataSource(ApiCoordinate coordinate, String httpStatusVar,
-                                                   String outboundHeadersVar) {
+                                                    String outboundHeadersVar) {
     return ofNullable(ramlResources.get(coordinate.getPath()))
         .map(resource -> resource.getAction(coordinate.getMethod()))
-        .map(action -> new FlowMetadata(this, action, coordinate, baseUriParameters, httpStatusVar, outboundHeadersVar, notifier));
+        .map(action -> new FlowMetadata(this, action, coordinate, baseUriParameters, httpStatusVar, outboundHeadersVar,
+                                        notifier));
   }
 
   public Map<String, String> getConsolidatedSchemas() {

@@ -25,6 +25,7 @@
         <mule.http.connector.version>1.2.0</mule.http.connector.version>
 
         <amfVersion>1.6.0-SNAPSHOT</amfVersion>
+        <amfXmlExtensionVersion>1.0.0-SNAPSHOT</amfXmlExtensionVersion>
 
         <licensePath>LICENSE_HEADER.txt</licensePath>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,6 +39,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- AMF -->
+            <dependency>
+                <groupId>com.github.amlorg</groupId>
+                <artifactId>amf-client_2.12</artifactId>
+                <version>${amfVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mule.amf</groupId>
+                <artifactId>amf-xml-extension_2.12</artifactId>
+                <version>${amfXmlExtensionVersion}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.raml</groupId>
                 <artifactId>raml-parser</artifactId>

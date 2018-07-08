@@ -6,15 +6,10 @@
  */
 package org.mule.module.apikit.metadata.internal.model;
 
-public class Flow {
+import java.util.Optional;
+import org.mule.module.apikit.metadata.api.MetadataSource;
 
-  private String name;
+public interface MetadataResolverFactory {
 
-  public Flow(final String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
+  Optional<MetadataResolver> getMetadataResolver(String apiDefinition);
 }

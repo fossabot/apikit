@@ -6,7 +6,7 @@
  */
 package org.mule.module.apikit.metadata.internal.model;
 
-public class FlowMapping {
+class FlowMapping {
 
   private String resource;
   private String action;
@@ -14,7 +14,8 @@ public class FlowMapping {
   private String flowRef;
   private String configName;
 
-  public FlowMapping(final String configName, final String resource, final String action, final String contentType, final String flowRef) {
+  public FlowMapping(final String configName, final String resource, final String action, final String contentType,
+                     final String flowRef) {
     this.configName = configName;
     this.resource = resource;
     this.action = action;

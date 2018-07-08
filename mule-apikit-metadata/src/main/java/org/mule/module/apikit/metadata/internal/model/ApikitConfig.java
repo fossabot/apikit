@@ -1,8 +1,8 @@
 /*
- * (c) 2003-2017 MuleSoft, Inc. This software is protected under international copyright
- * law. All use of this software is subject to MuleSoft's Master Subscription Agreement
- * (or other master license agreement) separately entered into in writing between you and
- * MuleSoft. If such an agreement is not in place, you may not use the software.
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
  */
 package org.mule.module.apikit.metadata.internal.model;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import org.mule.module.apikit.metadata.api.Notifier;
 
-public class ApikitConfig {
+class ApikitConfig {
 
   final private String name;
   final private String apiDefinition;
@@ -18,18 +18,20 @@ public class ApikitConfig {
   final private String httpStatusVarName;
   final private String outputHeadersVarName;
   final private Notifier notifier;
-  
-  final private Optional<MetadataResolver> metadataResolver;
 
-  public ApikitConfig(final String name, final String apiDefinition, List<FlowMapping> flowMappings, 
-                      final String httpStatusVarName, final String outputHeadersVarName, final Optional<MetadataResolver> metadataResolver, final Notifier notifier) {
-      
+  final private MetadataResolverFactory metadataResolverFactory;
+  private Optional<MetadataResolver> metadataResolver = null;
+
+  public ApikitConfig(final String name, final String apiDefinition, List<FlowMapping> flowMappings,
+                      final String httpStatusVarName, final String outputHeadersVarName,
+                      final MetadataResolverFactory metadataResolverFactory, final Notifier notifier) {
+
     this.name = name;
     this.apiDefinition = apiDefinition;
     this.flowMappings = flowMappings;
     this.httpStatusVarName = httpStatusVarName;
     this.outputHeadersVarName = outputHeadersVarName;
-    this.metadataResolver = metadataResolver;
+    this.metadataResolverFactory = metadataResolverFactory;
     this.notifier = notifier;
   }
 
@@ -63,18 +65,21 @@ public class ApikitConfig {
      */
 
   public List<FlowMapping> getFlowMappings() {
-        return flowMappings;
-    }
+    return flowMappings;
+  }
 
   public String getHttpStatusVarName() {
-        return httpStatusVarName;
-    }
+    return httpStatusVarName;
+  }
 
   public String getOutputHeadersVarName() {
-        return outputHeadersVarName;
-    }
+    return outputHeadersVarName;
+  }
 
   public Optional<MetadataResolver> getMetadataResolver() {
-     return metadataResolver;
+    if (metadataResolver == null) {
+      metadataResolver = metadataResolverFactory.getMetadataResolver(apiDefinition);
+    }
+    return metadataResolver;
   }
 }

@@ -26,11 +26,11 @@ public abstract class AbstractMultiParserTestCase {
   private static final String AMF_PARSER = "AmfParser";
   private static final String JAVA_PARSER = "JavaParser";
 
-    @Parameterized.Parameters(name = "{0}")
+  @Parameterized.Parameters(name = "{0}")
   public static Iterable<Object[]> data() {
     return asList(new Object[][] {
-            {JAVA_PARSER},
-            {AMF_PARSER}
+        {JAVA_PARSER},
+        {AMF_PARSER}
     });
   }
 

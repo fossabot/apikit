@@ -4,17 +4,15 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.module.apikit.metadata.internal.model;
+package org.mule.module.apikit.metadata.internal.amfparser;
 
-public class Flow {
+class ParserException extends RuntimeException {
 
-  private String name;
-
-  public Flow(final String name) {
-    this.name = name;
+  public ParserException(final String message) {
+    super(message);
   }
 
-  public String getName() {
-    return name;
+  public ParserException(final String message, Throwable cause) {
+    super(message, cause);
   }
 }
