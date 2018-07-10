@@ -24,7 +24,7 @@
         <mule.api.version>1.1.1</mule.api.version>
         <mule.http.connector.version>1.2.0</mule.http.connector.version>
 
-        <amfVersion>1.6.0-SNAPSHOT</amfVersion>
+        <amfVersion>1.7.0-SNAPSHOT</amfVersion>
         <amfXmlExtensionVersion>1.0.0-SNAPSHOT</amfXmlExtensionVersion>
 
         <licensePath>LICENSE_HEADER.txt</licensePath>
