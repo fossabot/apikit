@@ -48,9 +48,9 @@ public class FlowMetadata implements MetadataSource {
   final private RamlApiWrapper api;
   final private Notifier notifier;
 
-  public FlowMetadata(RamlApiWrapper api, IAction action, ApiCoordinate coordinate, Map<String, IParameter> baseUriParameters,
-                      String httpStatusVar,
-                      String outboundHeadersVar, Notifier notifier) {
+  public FlowMetadata(final RamlApiWrapper api, final IAction action, final ApiCoordinate coordinate, final Map<String, IParameter> baseUriParameters,
+                      final String httpStatusVar,
+                      final String outboundHeadersVar, Notifier notifier) {
     this.api = api;
     this.action = action;
     this.coordinate = coordinate;
@@ -75,8 +75,8 @@ public class FlowMetadata implements MetadataSource {
     return of(function);
   }
 
-  private MuleEventMetadataType inputMetadata(IAction action, ApiCoordinate coordinate,
-                                              Map<String, IParameter> baseUriParameters) {
+  private MuleEventMetadataType inputMetadata(final IAction action, final ApiCoordinate coordinate,
+                                              final Map<String, IParameter> baseUriParameters) {
     final MessageMetadataType message = new MessageMetadataTypeBuilder()
         .payload(getInputPayload(action, coordinate))
         .attributes(getInputAttributes(action, baseUriParameters)).build();
@@ -84,17 +84,17 @@ public class FlowMetadata implements MetadataSource {
     return new MuleEventMetadataTypeBuilder().message(message).build();
   }
 
-  private MuleEventMetadataType outputMetadata(IAction action, ApiCoordinate coordinate, String outboundHeadersVar,
+  private MuleEventMetadataType outputMetadata(final IAction action, final ApiCoordinate coordinate, final String outboundHeadersVar,
                                                String httpStatusVar) {
     final MessageMetadataType message = new MessageMetadataTypeBuilder()
         .payload(getOutputPayload(action, coordinate)).build();
 
     return new MuleEventMetadataTypeBuilder().message(message)
-        .addVariable(outboundHeadersVar, getOutputHeadersMetadata(action).build())
+        .addVariable(outboundHeadersVar, getOutputHeaders(action).build())
         .addVariable(httpStatusVar, MetadataFactory.stringMetadata()).build();
   }
 
-  private ObjectTypeBuilder getOutputHeadersMetadata(IAction action) {
+  private ObjectTypeBuilder getOutputHeaders(final IAction action) {
     final Map<String, IParameter> headers = findFirstResponse(action).map(IResponse::getHeaders).orElse(emptyMap());
 
     final ObjectTypeBuilder builder = BaseTypeBuilder.create(MetadataFormat.JAVA).objectType();
@@ -104,7 +104,7 @@ public class FlowMetadata implements MetadataSource {
     return builder;
   }
 
-  private Optional<IResponse> findFirstResponse(IAction action) {
+  private Optional<IResponse> findFirstResponse(final IAction action) {
     final Optional<IResponse> response = getResponse(action, "200");
 
     if (response.isPresent())
@@ -116,7 +116,7 @@ public class FlowMetadata implements MetadataSource {
         .findFirst();
   }
 
-  private Optional<IResponse> getResponse(IAction action, String statusCode) {
+  private Optional<IResponse> getResponse(final IAction action, final String statusCode) {
     return Optional.ofNullable(action.getResponses().get(statusCode)).filter(IResponse::hasBody);
   }
 
@@ -129,7 +129,7 @@ public class FlowMetadata implements MetadataSource {
     return builder;
   }
 
-  private ObjectTypeBuilder getHeaders(IAction action) {
+  private ObjectTypeBuilder getInputHeaders(final IAction action) {
     final ObjectTypeBuilder builder = BaseTypeBuilder.create(MetadataFormat.JAVA).objectType();
 
     action.getHeaders().forEach(
@@ -138,7 +138,7 @@ public class FlowMetadata implements MetadataSource {
     return builder;
   }
 
-  private ObjectType getInputAttributes(IAction action, Map<String, IParameter> baseUriParameters) {
+  private ObjectType getInputAttributes(final IAction action, final Map<String, IParameter> baseUriParameters) {
 
     final ObjectTypeBuilder builder = BaseTypeBuilder.create(MetadataFormat.JAVA).objectType();
     builder.addField()
@@ -148,7 +148,7 @@ public class FlowMetadata implements MetadataSource {
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_HEADERS.getName())
         .required(true)
-        .value(getHeaders(action));
+        .value(getInputHeaders(action));
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_LISTENER_PATH.getName())
         .required(true)
@@ -210,7 +210,7 @@ public class FlowMetadata implements MetadataSource {
     return builder.build();
   }
 
-  private ObjectTypeBuilder getUriParameters(IAction action, Map<String, IParameter> baseUriParameters) {
+  private ObjectTypeBuilder getUriParameters(final IAction action, Map<String, IParameter> baseUriParameters) {
     final ObjectTypeBuilder builder = BaseTypeBuilder.create(MetadataFormat.JAVA).objectType();
 
     baseUriParameters.forEach((name, parameter) -> builder.addField().key(name).value(parameter.getMetadata()));
@@ -220,7 +220,7 @@ public class FlowMetadata implements MetadataSource {
     return builder;
   }
 
-  private MetadataType getOutputPayload(IAction action, ApiCoordinate coordinate) {
+  private MetadataType getOutputPayload(final IAction action, final ApiCoordinate coordinate) {
     final Optional<Collection<IMimeType>> mimeTypes = findFirstResponse(action)
         .map(response -> response.getBody().values());
 
@@ -235,7 +235,7 @@ public class FlowMetadata implements MetadataSource {
     return loadIOPayloadMetadata(mimeType, coordinate, api, "output");
   }
 
-  private MetadataType getInputPayload(IAction action, ApiCoordinate coordinate) {
+  private MetadataType getInputPayload(final IAction action, final ApiCoordinate coordinate) {
     @Nullable
     IMimeType mimeType = null;
 
@@ -250,8 +250,8 @@ public class FlowMetadata implements MetadataSource {
     return loadIOPayloadMetadata(mimeType, coordinate, api, "input");
   }
 
-  private MetadataType loadIOPayloadMetadata(IMimeType mimeType, ApiCoordinate coordinate, RamlApiWrapper api,
-                                             String payloadDescription) {
+  private MetadataType loadIOPayloadMetadata(final IMimeType mimeType, final ApiCoordinate coordinate, final RamlApiWrapper api,
+                                             final String payloadDescription) {
     try {
       return MetadataFactory.payloadMetadata(api, mimeType);
     } catch (Exception e) {

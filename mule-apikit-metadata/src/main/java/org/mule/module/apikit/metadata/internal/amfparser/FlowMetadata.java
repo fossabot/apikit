@@ -136,58 +136,58 @@ public class FlowMetadata implements MetadataSource {
     final ObjectTypeBuilder builder = BaseTypeBuilder.create(MetadataFormat.JAVA).objectType();
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_CLIENT_CERTIFICATE.getName())
-        // .required(false)
+        .required(false)
         .value(getClientCertificate());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_HEADERS.getName())
-        // .required(true)
+        .required(true)
         .value(getInputHeaders(operation));
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_LISTENER_PATH.getName())
-        //  .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_METHOD.getName())
-        //  .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_QUERY_PARAMS.getName())
-        //  .required(true)
+        .required(true)
         .value(getQueryParameters(operation));
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_QUERY_STRING.getName())
-        //   .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_RELATIVE_PATH.getName())
-        //   .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_REMOTE_ADDRESS.getName())
-        //  .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_REQUEST_PATH.getName())
-        //  .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_REQUEST_URI.getName())
-        //  .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_SCHEME.getName())
-        //  .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_URI_PARAMS.getName())
-        //  .required(true)
+        .required(true)
         .value(getUriParameters(endPoint, baseUrParameters));
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_VERSION.getName())
         .value(MetadataFactory.stringMetadata());
     builder.addField()
         .key(HttpRequestAttributesFields.ATTRIBUTES_LOCAL_ADDRESS.getName())
-        //   .required(true)
+        .required(true)
         .value(MetadataFactory.stringMetadata());
 
     return builder.build();

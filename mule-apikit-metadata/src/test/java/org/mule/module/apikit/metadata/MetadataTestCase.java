@@ -6,6 +6,8 @@
  */
 package org.mule.module.apikit.metadata;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -38,6 +40,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.mule.module.apikit.metadata.api.Metadata.MULE_APIKIT_PARSER_AMF;
 
 @RunWith(Parameterized.class)
 public class MetadataTestCase extends TestDataProvider {
@@ -47,6 +50,17 @@ public class MetadataTestCase extends TestDataProvider {
   public MetadataTestCase(File input, Map<String, String> expectedOutput, String name) {
     super(input, expectedOutput, name);
   }
+
+
+    @Before
+    public void beforeTest() {
+        System.setProperty(MULE_APIKIT_PARSER_AMF, Boolean.FALSE.toString());
+    }
+
+    @After
+    public void afterTest() {
+        System.clearProperty(MULE_APIKIT_PARSER_AMF);
+    }
 
   @Parameterized.Parameters(name = "{2}")
   public static Collection<Object[]> getData() throws IOException, URISyntaxException {
