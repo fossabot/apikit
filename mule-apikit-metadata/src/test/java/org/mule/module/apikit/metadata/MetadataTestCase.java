@@ -52,15 +52,15 @@ public class MetadataTestCase extends TestDataProvider {
   }
 
 
-    @Before
-    public void beforeTest() {
-        System.setProperty(MULE_APIKIT_PARSER_AMF, Boolean.FALSE.toString());
-    }
+  @Before
+  public void beforeTest() {
+    System.setProperty(MULE_APIKIT_PARSER_AMF, Boolean.FALSE.toString());
+  }
 
-    @After
-    public void afterTest() {
-        System.clearProperty(MULE_APIKIT_PARSER_AMF);
-    }
+  @After
+  public void afterTest() {
+    System.clearProperty(MULE_APIKIT_PARSER_AMF);
+  }
 
   @Parameterized.Parameters(name = "{2}")
   public static Collection<Object[]> getData() throws IOException, URISyntaxException {

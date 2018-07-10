@@ -48,7 +48,8 @@ public class FlowMetadata implements MetadataSource {
   final private RamlApiWrapper api;
   final private Notifier notifier;
 
-  public FlowMetadata(final RamlApiWrapper api, final IAction action, final ApiCoordinate coordinate, final Map<String, IParameter> baseUriParameters,
+  public FlowMetadata(final RamlApiWrapper api, final IAction action, final ApiCoordinate coordinate,
+                      final Map<String, IParameter> baseUriParameters,
                       final String httpStatusVar,
                       final String outboundHeadersVar, Notifier notifier) {
     this.api = api;
@@ -84,7 +85,8 @@ public class FlowMetadata implements MetadataSource {
     return new MuleEventMetadataTypeBuilder().message(message).build();
   }
 
-  private MuleEventMetadataType outputMetadata(final IAction action, final ApiCoordinate coordinate, final String outboundHeadersVar,
+  private MuleEventMetadataType outputMetadata(final IAction action, final ApiCoordinate coordinate,
+                                               final String outboundHeadersVar,
                                                String httpStatusVar) {
     final MessageMetadataType message = new MessageMetadataTypeBuilder()
         .payload(getOutputPayload(action, coordinate)).build();
