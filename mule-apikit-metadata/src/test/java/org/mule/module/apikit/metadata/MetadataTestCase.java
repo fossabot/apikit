@@ -48,101 +48,102 @@ public class MetadataTestCase {
 
   private static final PathMatcher API_MATCHER = FileSystems.getDefault().getPathMatcher("glob:app.xml");
 
-    private static final String AMF_PARSER = "AmfParser";
-    private static final String JAVA_PARSER = "JavaParser";
+  private static final String AMF_PARSER = "AmfParser";
+  private static final String JAVA_PARSER = "JavaParser";
 
-    private String parser;
-    private String folderName;
-    private File app;
-    private Flow flow;
+  private String parser;
+  private String folderName;
+  private File app;
+  private Flow flow;
 
   public MetadataTestCase(final String parser, final String folderName, final File app, final Flow flow) {
 
-        this.parser = parser;
-        this.folderName = folderName;
-        this.app = app;
-        this.flow = flow;
+    this.parser = parser;
+    this.folderName = folderName;
+    this.app = app;
+    this.flow = flow;
   }
 
-    @Before
-    public void beforeTest() {
-        final Boolean value = AMF_PARSER.equals(parser) ? Boolean.TRUE : Boolean.FALSE;
-        System.setProperty(MULE_APIKIT_PARSER_AMF, value.toString());
-    }
+  @Before
+  public void beforeTest() {
+    final Boolean value = AMF_PARSER.equals(parser) ? Boolean.TRUE : Boolean.FALSE;
+    System.setProperty(MULE_APIKIT_PARSER_AMF, value.toString());
+  }
 
-    @After
-    public void afterTest() {
-        System.clearProperty(MULE_APIKIT_PARSER_AMF);
-    }
+  @After
+  public void afterTest() {
+    System.clearProperty(MULE_APIKIT_PARSER_AMF);
+  }
 
   @Test
   public void checkMetadata() throws Exception {
-      final boolean amf = Boolean.getBoolean(MULE_APIKIT_PARSER_AMF);
-      final File goldenFile = goldenFile();
-      
-       
-      //System.out.println("MetadataTestCase2 [" + parser + "] " + amf + " " + folderName + " " + goldenFile);
+    final boolean amf = Boolean.getBoolean(MULE_APIKIT_PARSER_AMF);
+    final File goldenFile = goldenFile();
 
-      final ApplicationModel applicationModel = createApplicationModel(app);
-      assertThat(applicationModel, notNullValue());
 
-      final Optional<FunctionType> metadata = getMetadata(applicationModel, flow);
-      assertThat(metadata.isPresent(), is(true));
-      
-      final String current = metadataToString(metadata.get());
+    //System.out.println("MetadataTestCase2 [" + parser + "] " + amf + " " + folderName + " " + goldenFile);
 
-      final String expected;
-      if (!goldenFile.exists()) {
+    final ApplicationModel applicationModel = createApplicationModel(app);
+    assertThat(applicationModel, notNullValue());
 
-          final String srcPath = goldenFile.getPath().replace("target/test-classes", "src/test/resources");
-          final Path goldenPath = Paths.get(srcPath);
-          System.out.println("*** Create Golden " + goldenPath);
-          createGoldenFile(goldenPath, current);
-          expected = readFile(goldenPath);
-      }
-      else 
-        expected = readFile(goldenFile.toPath());
-      
-      assertThat(format("Function metadata differ from expected. File: '%s'", goldenFile.getName()), current, is(equalTo(expected)));
+    final Optional<FunctionType> metadata = getMetadata(applicationModel, flow);
+    assertThat(metadata.isPresent(), is(true));
+
+    final String current = metadataToString(metadata.get());
+
+    final String expected;
+    if (!goldenFile.exists()) {
+
+      final String srcPath = goldenFile.getPath().replace("target/test-classes", "src/test/resources");
+      final Path goldenPath = Paths.get(srcPath);
+      System.out.println("*** Create Golden " + goldenPath);
+      createGoldenFile(goldenPath, current);
+      expected = readFile(goldenPath);
+    } else
+      expected = readFile(goldenFile.toPath());
+
+    assertThat(format("Function metadata differ from expected. File: '%s'", goldenFile.getName()), current,
+               is(equalTo(expected)));
   }
 
   @Parameterized.Parameters(name = "{0}-{1}-{3}")
   public static Collection<Object[]> getData() throws IOException, URISyntaxException {
-      final URI baseFolder = MetadataTestCase.class.getResource("").toURI(); 
-      return getData(baseFolder);
+    final URI baseFolder = MetadataTestCase.class.getResource("").toURI();
+    return getData(baseFolder);
   }
-  
+
   static Collection<Object[]> getData(final URI baseFolder) throws IOException {
     final List<File> apps = scan(baseFolder);
 
     final List<Object[]> parameters = new ArrayList<>();
-     
+
     apps.forEach(app -> {
-        try {
-            final ApplicationModel applicationModel = createApplicationModel(app);
-            
-            // Only flow with metadata included
-            final List<Flow> flows = ApplicationModelWrapper.findFlows(applicationModel).stream().filter(flow -> hasMetadata(applicationModel, flow)).collect(toList());
+      try {
+        final ApplicationModel applicationModel = createApplicationModel(app);
 
-            final String folderName = app.getParentFile().getName();
+        // Only flow with metadata included
+        final List<Flow> flows = ApplicationModelWrapper.findFlows(applicationModel).stream()
+            .filter(flow -> hasMetadata(applicationModel, flow)).collect(toList());
 
-            flows.forEach(flow -> parameters.add(new Object[] {JAVA_PARSER, folderName, app, flow}));
-            flows.forEach(flow -> parameters.add(new Object[] {AMF_PARSER, folderName, app, flow}));
-    
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-   });
+        final String folderName = app.getParentFile().getName();
+
+        flows.forEach(flow -> parameters.add(new Object[] {JAVA_PARSER, folderName, app, flow}));
+        flows.forEach(flow -> parameters.add(new Object[] {AMF_PARSER, folderName, app, flow}));
+
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    });
 
     return parameters;
   }
-  
+
   private static boolean hasMetadata(final ApplicationModel applicationModel, final Flow flow) {
-      try {
-          return getMetadata(applicationModel, flow).isPresent();
-      } catch (Exception e) {
-          return false;
-      }
+    try {
+      return getMetadata(applicationModel, flow).isPresent();
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   private static List<File> scan(final URI resources) throws IOException {
@@ -154,52 +155,53 @@ public class MetadataTestCase {
         .collect(toList());
   }
 
-    private static ApplicationModel createApplicationModel(final File app) throws Exception {
-        final MockedApplicationModel.Builder builder = new MockedApplicationModel.Builder();
-        builder.addConfig("apiKitSample", app);
-        final MockedApplicationModel mockedApplicationModel = builder.build();
-        return mockedApplicationModel.getApplicationModel();
+  private static ApplicationModel createApplicationModel(final File app) throws Exception {
+    final MockedApplicationModel.Builder builder = new MockedApplicationModel.Builder();
+    builder.addConfig("apiKitSample", app);
+    final MockedApplicationModel mockedApplicationModel = builder.build();
+    return mockedApplicationModel.getApplicationModel();
+  }
+
+  private File goldenFile() {
+    final String fileName = flow.getName()
+        .replace("\\", "")
+        .replace(":", "-") + ".out";
+
+    final File parserFolder = new File(app.getParentFile(), parser);
+    return new File(parserFolder, fileName);
+  }
+
+  private static String readFile(final Path path) {
+    try {
+      return new String(Files.readAllBytes(path));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    private File goldenFile() {
-        final String fileName = flow.getName()
-                .replace("\\", "")
-                .replace(":", "-") + ".out";
-        
-        final File parserFolder = new File(app.getParentFile(), parser);
-        return new File(parserFolder, fileName);
-    }
+  private static Optional<FunctionType> getMetadata(Metadata metadata, Flow flow) {
+    return metadata.getMetadataForFlow(flow.getName());
+  }
 
-    private static String readFile(final Path path) {
-        try {
-            return new String(Files.readAllBytes(path));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+  private static Optional<FunctionType> getMetadata(final ApplicationModel applicationModel, final Flow flow) throws Exception {
 
-    private static Optional<FunctionType> getMetadata(Metadata metadata, Flow flow) {
-        return metadata.getMetadataForFlow(flow.getName());
-    }
+    final Metadata metadata = new Metadata.Builder()
+        .withApplicationModel(applicationModel)
+        .withResourceLoader(new TestResourceLoader())
+        .withNotifier(new TestNotifier()).build();
 
-    private static Optional<FunctionType> getMetadata(final ApplicationModel applicationModel, final Flow flow) throws Exception {
+    return metadata.getMetadataForFlow(flow.getName());
+  }
 
-        final Metadata metadata = new Metadata.Builder()
-                .withApplicationModel(applicationModel)
-                .withResourceLoader(new TestResourceLoader())
-                .withNotifier(new TestNotifier()).build();
+  private static String metadataToString(final FunctionType functionType) {
+    return new MetadataTypeWriter().toString(functionType);
+  }
 
-        return metadata.getMetadataForFlow(flow.getName());
-    }
-
-    private static String metadataToString(final FunctionType functionType) {
-        return new MetadataTypeWriter().toString(functionType);
-    }
-
-    private static void createGoldenFile(final Path goldenFile, final String content) throws IOException {
-         // Write golden files  with current values
-        final Path parent = goldenFile.getParent();
-        if (!Files.exists(parent)) Files.createDirectory(parent);
-        Files.write(goldenFile, content.getBytes("UTF-8"));
-    }
+  private static void createGoldenFile(final Path goldenFile, final String content) throws IOException {
+    // Write golden files  with current values
+    final Path parent = goldenFile.getParent();
+    if (!Files.exists(parent))
+      Files.createDirectory(parent);
+    Files.write(goldenFile, content.getBytes("UTF-8"));
+  }
 }
