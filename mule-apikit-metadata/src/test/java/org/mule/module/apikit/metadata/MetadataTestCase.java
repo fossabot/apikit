@@ -35,7 +35,6 @@ import org.mule.module.apikit.metadata.utils.TestResourceLoader;
 import org.mule.runtime.config.internal.model.ApplicationModel;
 
 import static java.lang.String.format;
-import static java.lang.System.getProperty;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -94,18 +93,25 @@ public class MetadataTestCase {
     final String expected;
     if (!goldenFile.exists()) {
 
-      final String srcPath = goldenFile.getPath().replace("target/test-classes", "src/test/resources");
-      final Path goldenPath = Paths.get(srcPath);
-      System.out.println("*** Create Golden " + goldenPath);
-      createGoldenFile(goldenPath, current);
+      final Path goldenPath = createGoldenFile(goldenFile, current);
       expected = readFile(goldenPath);
     } else
       expected = readFile(goldenFile.toPath());
 
-    assertThat(format("Function metadata differ from expected. File: '%s'", goldenFile.getName()), current,
-               is(equalTo(expected)));
+    try {
+        assertThat(format("Function metadata differ from expected. File: '%s'", goldenFile.getName()), current,
+                is(equalTo(expected)));
+    } catch(final AssertionError error) {
+        /*
+        final String name = goldenFile.getName();
+        final File folder = goldenFile().getParentFile();
+        final File newGoldenFile = new File(folder, name + "-New");
+        createGoldenFile(newGoldenFile, expected);
+        */
+        throw error;
+    }
   }
-
+ 
   @Parameterized.Parameters(name = "{0}-{1}-{3}")
   public static Collection<Object[]> getData() throws IOException, URISyntaxException {
     final URI baseFolder = MetadataTestCase.class.getResource("").toURI();
@@ -127,7 +133,7 @@ public class MetadataTestCase {
 
         final String folderName = app.getParentFile().getName();
 
-        flows.forEach(flow -> parameters.add(new Object[] {JAVA_PARSER, folderName, app, flow}));
+        //flows.forEach(flow -> parameters.add(new Object[] {JAVA_PARSER, folderName, app, flow}));
         flows.forEach(flow -> parameters.add(new Object[] {AMF_PARSER, folderName, app, flow}));
 
       } catch (Exception e) {
@@ -197,11 +203,16 @@ public class MetadataTestCase {
     return new MetadataTypeWriter().toString(functionType);
   }
 
-  private static void createGoldenFile(final Path goldenFile, final String content) throws IOException {
-    // Write golden files  with current values
-    final Path parent = goldenFile.getParent();
+  private static Path createGoldenFile(final File goldenFile, final String content) throws IOException {
+
+    final String srcPath = goldenFile.getPath().replace("target/test-classes", "src/test/resources");
+    final Path goldenPath = Paths.get(srcPath);
+    System.out.println("*** Create Golden " + goldenPath);
+
+      // Write golden files  with current values
+    final Path parent = goldenPath.getParent();
     if (!Files.exists(parent))
       Files.createDirectory(parent);
-    Files.write(goldenFile, content.getBytes("UTF-8"));
+    return Files.write(goldenPath, content.getBytes("UTF-8"));
   }
 }

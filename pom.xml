@@ -19,7 +19,7 @@
 
     <properties>
         <!--mule community version-->
-        <amfVersion>1.7.0-SNAPSHOT</amfVersion>
+        <amfVersion>1.8.0-SNAPSHOT</amfVersion>
         <amfXmlExtensionVersion>1.0.0-SNAPSHOT</amfXmlExtensionVersion>
 
         <mule.version>4.2.0-SNAPSHOT</mule.version>
