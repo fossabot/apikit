@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 import static com.sun.jmx.mbeanserver.Util.cast;
 import static org.apache.commons.io.FilenameUtils.getExtension;
 
-class DocumentParser {
+public class DocumentParser {
 
   private DocumentParser() {}
 

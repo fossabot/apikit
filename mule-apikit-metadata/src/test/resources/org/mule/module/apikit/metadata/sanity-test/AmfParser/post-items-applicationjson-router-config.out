@@ -1,7 +1,7 @@
 %type _:Java = (inputMetadata:{
   "message" : @typeId("value" : "org.mule.runtime.api.message.Message") {
-    "payload" : {
-      "items"? : [{
+    "payload" : @typeId("value" : "http://jsonschema.net") {
+      "items"? : [@typeId("value" : "http://jsonschema.net/items/0") {
           "code"? : String, 
           "color"? : String, 
           "size"? : String, 
@@ -25,10 +25,10 @@
       "listenerPath" : String, 
       "method" : String, 
       "queryParams" : {
-        "color"? : String, 
-        "description"? : String, 
+        "code"? : @length("min" : 3, "max" : 10) String, 
         "size"? : @enum("values" : ["small","large","medium"]) String, 
-        "code"? : @length("min" : 3, "max" : 10) String
+        "color"? : String, 
+        "description"? : String
       }, 
       "queryString" : String, 
       "relativePath" : String, 
@@ -37,7 +37,7 @@
       "requestUri" : String, 
       "scheme" : String, 
       "uriParams" : {
-
+        "version"? : String
       }, 
       "version"? : String, 
       "localAddress" : String

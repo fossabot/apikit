@@ -1,14 +1,6 @@
 %type _:Java = (inputMetadata:{
   "message" : @typeId("value" : "org.mule.runtime.api.message.Message") {
-    "payload" : {
-      "clients"? : [{
-          "code"? : String, 
-          "name"? : String, 
-          "id"? : Number, 
-          * : Any
-        }], 
-      * : Any
-    }, 
+    "payload" : Any, 
     "attributes" : {
       "clientCertificate"? : {
         "publicKey"? : {
@@ -32,6 +24,7 @@
       "requestUri" : String, 
       "scheme" : String, 
       "uriParams" : {
+        "version"? : String, 
         "clientId"? : @range("from" : 0) @int Number
       }, 
       "version"? : String, 

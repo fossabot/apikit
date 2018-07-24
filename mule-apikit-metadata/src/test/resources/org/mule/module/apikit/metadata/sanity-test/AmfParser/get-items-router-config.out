@@ -24,7 +24,7 @@
       "requestUri" : String, 
       "scheme" : String, 
       "uriParams" : {
-
+        "version"? : String
       }, 
       "version"? : String, 
       "localAddress" : String
@@ -35,8 +35,8 @@
   }
 }) -> {
   "message" : @typeId("value" : "org.mule.runtime.api.message.Message") {
-    "payload" : {
-      "items"? : [{
+    "payload" : @typeId("value" : "http://jsonschema.net") {
+      "items"? : [@typeId("value" : "http://jsonschema.net/items/0") {
           "code"? : String, 
           "color"? : String, 
           "size"? : String, 

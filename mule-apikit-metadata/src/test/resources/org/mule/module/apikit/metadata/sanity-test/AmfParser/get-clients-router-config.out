@@ -15,10 +15,10 @@
       "listenerPath" : String, 
       "method" : String, 
       "queryParams" : {
-        "color"? : String, 
-        "description"? : String, 
+        "code"? : @length("min" : 3, "max" : 10) String, 
         "size"? : @enum("values" : ["small","large","medium"]) String, 
-        "code"? : @length("min" : 3, "max" : 10) String
+        "color"? : String, 
+        "description"? : String
       }, 
       "queryString" : String, 
       "relativePath" : String, 
@@ -27,7 +27,7 @@
       "requestUri" : String, 
       "scheme" : String, 
       "uriParams" : {
-
+        "version"? : String
       }, 
       "version"? : String, 
       "localAddress" : String
@@ -38,15 +38,7 @@
   }
 }) -> {
   "message" : @typeId("value" : "org.mule.runtime.api.message.Message") {
-    "payload" : {
-      "clients"? : [{
-          "code"? : String, 
-          "name"? : String, 
-          "id"? : Number, 
-          * : Any
-        }], 
-      * : Any
-    }
+    "payload" : Any
   }, 
   "variables" : {
     "outboundHeaders" : {

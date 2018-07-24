@@ -99,19 +99,17 @@ public class MetadataTestCase {
       expected = readFile(goldenFile.toPath());
 
     try {
-        assertThat(format("Function metadata differ from expected. File: '%s'", goldenFile.getName()), current,
-                is(equalTo(expected)));
-    } catch(final AssertionError error) {
-        /*
-        final String name = goldenFile.getName();
-        final File folder = goldenFile().getParentFile();
-        final File newGoldenFile = new File(folder, name + "-New");
-        createGoldenFile(newGoldenFile, expected);
-        */
-        throw error;
+      assertThat(format("Function metadata differ from expected. File: '%s'", goldenFile.getName()), current,
+                 is(equalTo(expected)));
+    } catch (final AssertionError error) {
+      final String name = goldenFile.getName();
+      final File folder = goldenFile().getParentFile();
+      final File newGoldenFile = new File(folder, name + "-New");
+      createGoldenFile(newGoldenFile, current);
+      throw error;
     }
   }
- 
+
   @Parameterized.Parameters(name = "{0}-{1}-{3}")
   public static Collection<Object[]> getData() throws IOException, URISyntaxException {
     final URI baseFolder = MetadataTestCase.class.getResource("").toURI();
@@ -133,7 +131,7 @@ public class MetadataTestCase {
 
         final String folderName = app.getParentFile().getName();
 
-        //flows.forEach(flow -> parameters.add(new Object[] {JAVA_PARSER, folderName, app, flow}));
+        flows.forEach(flow -> parameters.add(new Object[] {JAVA_PARSER, folderName, app, flow}));
         flows.forEach(flow -> parameters.add(new Object[] {AMF_PARSER, folderName, app, flow}));
 
       } catch (Exception e) {
@@ -209,7 +207,7 @@ public class MetadataTestCase {
     final Path goldenPath = Paths.get(srcPath);
     System.out.println("*** Create Golden " + goldenPath);
 
-      // Write golden files  with current values
+    // Write golden files  with current values
     final Path parent = goldenPath.getParent();
     if (!Files.exists(parent))
       Files.createDirectory(parent);
